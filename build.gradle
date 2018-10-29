@@ -16,12 +16,13 @@ repositories {
 dependencies {
     def log4jVersion = "2.8.2"
     def lombokVersion = "1.18.2"
-    compileOnly "org.apache.logging.log4j:log4j-api:$log4jVersion"
-    compileOnly "org.apache.logging.log4j:log4j-core:$log4jVersion"
-    compileOnly "org.apache.logging.log4j:log4j-jcl:$log4jVersion"
-    compileOnly "org.apache.logging.log4j:log4j-slf4j-impl:$log4jVersion"
+    compile "org.apache.logging.log4j:log4j-api:$log4jVersion"
+    compile "org.apache.logging.log4j:log4j-core:$log4jVersion"
+    compile "org.apache.logging.log4j:log4j-jcl:$log4jVersion"
+    compile "org.apache.logging.log4j:log4j-slf4j-impl:$log4jVersion"
     compile "com.google.guava:guava:27.0-jre"
     compile "io.javaslang:javaslang:2.0.5"
+    compile "org.projectlombok:lombok:$lombokVersion"
     testCompile "junit:junit:4.12"
     testCompile "org.assertj:assertj-core:3.8.0"
     annotationProcessor("org.projectlombok:lombok:$lombokVersion")
