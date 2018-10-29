@@ -41,13 +41,13 @@ public interface ValidationUtils {
                 try {
                     return StreamSupport.stream(v.validate(t).spliterator(), true);
                 } catch (Throwable throwable) {
-                    return Stream.of(throwable.getMessage());
+                    return Stream.of(String.format("got error %s when validate %s", throwable.getMessage(), t));
                 }
             }).distinct().collect(Collectors.toList());
     }
 
-    static <T> Validation<T, String> checkEquals(final T expected, final String error) {
-        return check(actual -> Objects.equals(expected, actual), error);
+    static <T> Validation<T, String> checkEqual(final T expected) {
+        return check(actual -> Objects.equals(expected, actual), target -> String.format("%s should equal to %s", target, expected));
     }
 
     static Validation<String, String> checkStringNotEmpty(final String error) {

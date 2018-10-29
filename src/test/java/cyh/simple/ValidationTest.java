@@ -39,7 +39,7 @@ public class ValidationTest {
 
     @Test
     public void testCheckEquals() {
-        Validation<String, String> checkEq = ValidationUtils.checkEquals("abc", "input is not as expected");
+        Validation<String, String> checkEq = ValidationUtils.checkEqual("abc");
         checkEq.validate("asd").forEach(System.out::println);
         Validation<Try<String>, String> checkTs = ValidationUtils.check((Try<String> t) -> t.filter(s -> s.startsWith("star")).isSuccess(), "input should start with star");
         checkTs.validate(Try.success("sss")).forEach(System.out::println);
