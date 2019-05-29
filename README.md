@@ -72,6 +72,7 @@ public interface Validation<T, E> {
 And it takes any instance of type `T`, validates `t` instance and returns all failures with type `E`
 - At very first, you can use `valid()` to start with a validation. `Valid()` means a validation that always success.
 - After you created the first validation for type `T`, you can compose the other validation with function `and()` or `or()`
+- Zero external dependencies. All code is implemented by using jdk internal APIs.
 
 
 
