@@ -119,4 +119,4 @@ person.address should contain China, but actual is US
 
 By using this framework, the `nameCheck`, `ageCheck`, `addressCheck` can all be reusable.
 
-But reusability is not limited to the created validation, you can add all common validations into ValidationUtils and combine them as needed.
+But reusability is not only limited to the created validations, you can add all common validations into ValidationUtils and combine them as needed.
