@@ -1,30 +1,42 @@
 plugins {
-    id "java"
+  id "java"
 }
 
-group "cyh.simple"
-version "0.1"
+group "com.github.iintothewind"
+version "0.2"
 
-sourceCompatibility = 1.8
+sourceCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
-    maven {
-        url "http://maven.aliyun.com/nexus/content/groups/public"
-    }
+  maven {
+    url "http://maven.aliyun.com/nexus/content/groups/public"
+  }
 }
 
 dependencies {
-    def log4jVersion = "2.8.2"
-    def lombokVersion = "1.18.2"
-    compile "org.apache.logging.log4j:log4j-api:$log4jVersion"
-    compile "org.apache.logging.log4j:log4j-core:$log4jVersion"
-    compile "org.apache.logging.log4j:log4j-jcl:$log4jVersion"
-    compile "org.apache.logging.log4j:log4j-slf4j-impl:$log4jVersion"
-    compile "com.google.guava:guava:27.0-jre"
-    compile "io.javaslang:javaslang:2.0.5"
-    compile "org.projectlombok:lombok:$lombokVersion"
-    testCompile "junit:junit:4.12"
-    testCompile "org.assertj:assertj-core:3.8.0"
-    annotationProcessor("org.projectlombok:lombok:$lombokVersion")
-    testAnnotationProcessor("org.projectlombok:lombok:$lombokVersion")
+  def log4jVersion = "2.11.1"
+  def lombokVersion = "1.18.2"
+  testImplementation "org.apache.logging.log4j:log4j-api:$log4jVersion"
+  testImplementation "org.apache.logging.log4j:log4j-core:$log4jVersion"
+  testImplementation "org.apache.logging.log4j:log4j-jcl:$log4jVersion"
+  testImplementation "org.apache.logging.log4j:log4j-slf4j-impl:$log4jVersion"
+  testImplementation "com.google.guava:guava:27.0-jre"
+  testImplementation "io.javaslang:javaslang:2.0.5"
+  testImplementation "org.projectlombok:lombok:$lombokVersion"
+  testImplementation "junit:junit:4.12"
+  testImplementation "org.assertj:assertj-core:3.8.0"
+  annotationProcessor("org.projectlombok:lombok:$lombokVersion")
+  testAnnotationProcessor("org.projectlombok:lombok:$lombokVersion")
+}
+
+jar {
+  from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+//  manifest {
+//    attributes 'Main-Class': ''
+//  }
+}
+
+task srcJar(type: Jar) {
+  classifier = 'sources'
+  from sourceSets.main.allSource
 }
