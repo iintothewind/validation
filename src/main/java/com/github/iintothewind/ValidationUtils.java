@@ -1,4 +1,4 @@
-package cyh.simple;
+package com.github.iintothewind;
 
 import java.util.Collections;
 import java.util.Objects;
@@ -46,8 +46,12 @@ public interface ValidationUtils {
       }).distinct().collect(Collectors.toList());
   }
 
+  static <T> Validation<T, String> checkNonNull() {
+    return check(Objects::nonNull, "require not null");
+  }
+
   static <T> Validation<T, String> checkEqual(final T expected) {
-    return check(actual -> Objects.equals(expected, actual), target -> String.format("%s should equal to %s", target, expected));
+    return check(actual -> Objects.equals(expected, actual), target -> String.format("Target should equal to %s, but actual is %s", target, expected));
   }
 
   static Validation<String, String> checkStringNotEmpty(final String error) {

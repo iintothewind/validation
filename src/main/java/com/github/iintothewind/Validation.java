@@ -1,4 +1,4 @@
-package cyh.simple;
+package com.github.iintothewind;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -22,16 +22,11 @@ public interface Validation<T, E> {
       .filter(o -> Optional.ofNullable(o.validate(t)).map(Iterable::iterator).filter(Iterator::hasNext).isPresent())
       .map(that -> Stream
         .concat(
-          StreamSupport.stream(Optional
-            .ofNullable(validate(t))
-            .map(Iterable::spliterator)
-            .orElse(Collections.<E>emptyList().spliterator()), true),
+          StreamSupport.stream(Optional.ofNullable(validate(t)).map(Iterable::spliterator).orElse(Stream.<E>empty().spliterator()), true),
           StreamSupport.stream(that.validate(t).spliterator(), true))
         .collect(Collectors.toList()))
       .orElse(StreamSupport
-        .stream(Optional
-          .ofNullable(validate(t)).map(Iterable::spliterator)
-          .orElse(Collections.<E>emptyList().spliterator()), true)
+        .stream(Optional.ofNullable(validate(t)).map(Iterable::spliterator).orElse(Stream.<E>empty().spliterator()), true)
         .collect(Collectors.toList()));
   }
 
@@ -40,7 +35,9 @@ public interface Validation<T, E> {
       if (Optional.ofNullable(validate(t)).filter(iterable -> iterable.iterator().hasNext()).isPresent()
         && Optional.ofNullable(other).map(o -> o.validate(t)).filter(iterable -> iterable.iterator().hasNext()).isPresent()) {
         return Stream
-          .concat(StreamSupport.stream(validate(t).spliterator(), true), StreamSupport.stream(other.validate(t).spliterator(), true))
+          .concat(
+            StreamSupport.stream(validate(t).spliterator(), true),
+            StreamSupport.stream(other.validate(t).spliterator(), true))
           .collect(Collectors.toList());
       } else {
         return Collections.emptyList();
