@@ -114,7 +114,7 @@ personCheck.validate(Person.builder().name("Jack").age(12).address("US").build()
 It will print:
 
 ```bash
-Target should equal to Jack, but actual is John
+person.name should be equal to John, but actual is Jack
 person.age should be bigger than 18, but actual is 12
 person.address should contain China, but actual is US
 ```
