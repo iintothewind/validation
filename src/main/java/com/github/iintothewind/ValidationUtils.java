@@ -47,11 +47,11 @@ public interface ValidationUtils {
   }
 
   static <T> Validation<T, String> checkNonNull() {
-    return check(Objects::nonNull, "require not null");
+    return check(Objects::nonNull, "target is required not null");
   }
 
   static <T> Validation<T, String> checkEqual(final T expected) {
-    return check(actual -> Objects.equals(expected, actual), target -> String.format("Target should equal to %s, but actual is %s", target, expected));
+    return check(actual -> Objects.equals(expected, actual), target -> String.format("target should equal to %s, but actual is %s", target, expected));
   }
 
   static Validation<String, String> checkStringNotEmpty(final String error) {

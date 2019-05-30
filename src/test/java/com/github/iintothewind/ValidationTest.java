@@ -23,7 +23,7 @@ public class ValidationTest {
     final Validation<Integer, String> check1 = ValidationUtils.check((Integer target) -> Optional.ofNullable(target).filter(i -> i > 0).isPresent(), "should be greater than zero");
     final Validation<Integer, String> check2 = ValidationUtils.check((Integer target) -> Optional.ofNullable(target).filter(i -> i < 10).isPresent(), "should be smaller than ten");
     final Validation<Integer, String> numberCheck = nullCheck.and(check1).and(check2);
-    Assertions.assertThat(numberCheck.validate(null)).contains("require not null", "should be greater than zero", "should be smaller than ten");
+    Assertions.assertThat(numberCheck.validate(null)).contains("target is required not null", "should be greater than zero", "should be smaller than ten");
     Assertions.assertThat(numberCheck.validate(-1)).contains("should be greater than zero");
     Assertions.assertThat(numberCheck.validate(11)).contains("should be smaller than ten");
 
@@ -37,7 +37,7 @@ public class ValidationTest {
     final Validation<Integer, String> numberCheck = nullCheck.and(check1.or(check2));
     Assertions.assertThat(numberCheck.validate(-1)).isEmpty();
     Assertions.assertThat(numberCheck.validate(11)).isEmpty();
-    Assertions.assertThat(numberCheck.validate(null)).contains("require not null", "should be greater than zero", "should be smaller than ten");
+    Assertions.assertThat(numberCheck.validate(null)).contains("target is required not null", "should be greater than zero", "should be smaller than ten");
   }
 
   @Test
@@ -96,8 +96,6 @@ public class ValidationTest {
       .and(person -> addressCheck.validate(person.getAddress()));
 
     personCheck.validate(Person.builder().name("Jack").age(12).address("US").build()).forEach(System.out::println);
-
-
   }
 
   @Getter
