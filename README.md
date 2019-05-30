@@ -83,24 +83,26 @@ By using this framework, the above validation could be:
 First lets create three validations:
 
 ```java
-final Validation<String, String> nameCheck = ValidationUtils.checkEqual("John");
+final Validation<String, String> nameCheck = ValidationUtils.checkString(
+    name -> name.equals("John"),
+    name -> String.format("person.name should be equal to John, but actual is %s", name));
 
-final Validation<Integer, String> ageCheck = ValidationUtils.check(
-  age -> Optional.ofNullable(age).filter(i -> i > 18).isPresent(),
-  age -> String.format("person.age should be bigger than 18, but actual is %s", age));
+final Validation<Integer, String> ageCheck = ValidationUtils.checkInteger(
+    age -> age > 18,
+    age -> String.format("person.age should be bigger than 18, but actual is %s", age));
 
-final Validation<String, String> addressCheck = ValidationUtils.check(
-  address -> Optional.ofNullable(address).filter(addr -> addr.contains("China")).isPresent(),
-  address -> String.format("person.address should contain China, but actual is %s", address));
+final Validation<String, String> addressCheck = ValidationUtils.checkString(
+    address -> address.contains("China"),
+    address -> String.format("person.address should contain China, but actual is %s", address));
 ```
 
 Then we compose these three validations to one for Person validation:
 
 ```java
 final Validation<Person, String> personCheck = Validation.<Person, String>valid()
-  .and(person -> nameCheck.validate(person.getName()))
-  .and(person -> ageCheck.validate(person.getAge()))
-  .and(person -> addressCheck.validate(person.getAddress()));
+    .and(person -> nameCheck.validate(Optional.ofNullable(person).map(Person::getName).orElse("")))
+    .and(person -> ageCheck.validate(Optional.ofNullable(person).map(Person::getAge).orElse(0)))
+    .and(person -> addressCheck.validate(Optional.ofNullable(person).map(Person::getAddress).orElse("")));
 ```
 
 At last, the validation for person is created, which can be used as following:
