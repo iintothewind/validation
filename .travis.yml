@@ -1,7 +1,7 @@
 language: java
 
 jdk:
-- openjdk8
+  - openjdk8
 
 script:
-- ./gradlew clean test --info
+  - ./gradlew clean test --info

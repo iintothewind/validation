@@ -5,19 +5,19 @@ import java.util.Objects;
 
 @FunctionalInterface
 public interface CheckedFunction<T, R> {
-    R apply(T t) throws Throwable;
+  static <T> CheckedFunction<T, T> identity() {
+    return t -> t;
+  }
 
-    default <V> CheckedFunction<V, R> compose(CheckedFunction<? super V, ? extends T> before) {
-        Objects.requireNonNull(before);
-        return (V v) -> apply(before.apply(v));
-    }
+  R apply(T t) throws Throwable;
 
-    default <V> CheckedFunction<T, V> andThen(CheckedFunction<? super R, ? extends V> after) {
-        Objects.requireNonNull(after);
-        return (T t) -> after.apply(apply(t));
-    }
+  default <V> CheckedFunction<V, R> compose(CheckedFunction<? super V, ? extends T> before) {
+    Objects.requireNonNull(before);
+    return (V v) -> apply(before.apply(v));
+  }
 
-    static <T> CheckedFunction<T, T> identity() {
-        return t -> t;
-    }
+  default <V> CheckedFunction<T, V> andThen(CheckedFunction<? super R, ? extends V> after) {
+    Objects.requireNonNull(after);
+    return (T t) -> after.apply(apply(t));
+  }
 }

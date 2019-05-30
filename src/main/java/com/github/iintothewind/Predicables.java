@@ -5,7 +5,7 @@ import java.util.function.Predicate;
 
 
 public interface Predicables {
-    static <T> Predicate<T> nonNull() {
-        return Objects::nonNull;
-    }
+  static <T> Predicate<T> nonNull() {
+    return Objects::nonNull;
+  }
 }
