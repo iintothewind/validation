@@ -16,12 +16,12 @@ repositories {
 dependencies {
   def log4jVersion = "2.11.1"
   def lombokVersion = "1.18.2"
+  testImplementation "io.vavr:vavr:0.10.0"
   testImplementation "org.apache.logging.log4j:log4j-api:$log4jVersion"
   testImplementation "org.apache.logging.log4j:log4j-core:$log4jVersion"
   testImplementation "org.apache.logging.log4j:log4j-jcl:$log4jVersion"
   testImplementation "org.apache.logging.log4j:log4j-slf4j-impl:$log4jVersion"
   testImplementation "com.google.guava:guava:27.0-jre"
-  testImplementation "io.javaslang:javaslang:2.0.5"
   testImplementation "org.projectlombok:lombok:$lombokVersion"
   testImplementation "junit:junit:4.12"
   testImplementation "org.assertj:assertj-core:3.8.0"

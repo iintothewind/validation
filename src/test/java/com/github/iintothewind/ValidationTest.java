@@ -4,7 +4,7 @@ import java.util.Optional;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import com.google.common.collect.Lists;
-import javaslang.control.Try;
+import io.vavr.control.Try;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -73,18 +73,35 @@ public class ValidationTest {
             name -> name.equals("John"),
             name -> String.format("person.name should be equal to John, but actual is %s", name));
 
+        final Validation<Try<String>, String> nameCheck1 = ValidationUtils.check(
+            Predicables.<Try<String>>nonNull().and(t -> t.filterTry("John"::equals).isSuccess()),
+            t -> t.map(s -> String.format("person.name should be equal to John, but actual is %s", s)).getOrElse("validation error: person.name"));
+
         final Validation<Integer, String> ageCheck = ValidationUtils.checkInteger(
             age -> age > 18,
             age -> String.format("person.age should be bigger than 18, but actual is %s", age));
+
+        final Validation<Try<Integer>, String> ageCheck1 = ValidationUtils.check(
+            Predicables.<Try<Integer>>nonNull().and(t -> t.filterTry(i -> i > 18).isSuccess()),
+            t -> t.map(s -> String.format("person.age should be bigger than 18, but actual is %s", s)).getOrElse("validation error: person.age"));
 
         final Validation<String, String> addressCheck = ValidationUtils.checkString(
             address -> address.contains("China"),
             address -> String.format("person.address should contain China, but actual is %s", address));
 
+        final Validation<Try<String>, String> addressCheck1 = ValidationUtils.check(
+            Predicables.<Try<String>>nonNull().and(t -> t.filterTry(addr -> addr.contains("China")).isSuccess()),
+            t -> t.map(s -> String.format("person.address should contain China, but actual is %s", s)).getOrElse("validation error: person.address"));
+
         final Validation<Person, String> personCheck = Validation.<Person, String>valid()
             .and(person -> nameCheck.validate(Optional.ofNullable(person).map(Person::getName).orElse("")))
             .and(person -> ageCheck.validate(Optional.ofNullable(person).map(Person::getAge).orElse(0)))
             .and(person -> addressCheck.validate(Optional.ofNullable(person).map(Person::getAddress).orElse("")));
+
+        final Validation<Person, String> personCheck1 = Validation.<Person, String>valid()
+            .and(person -> nameCheck1.validate(Try.of(() -> person.getName())))
+            .and(person -> ageCheck1.validate(Try.of(() -> person.getAge())))
+            .and(person -> addressCheck1.validate(Try.of(() -> person.getAddress())));
 
         final Iterable<String> result = personCheck.validate(Person.builder().name("Jack").age(12).address("US").build());
         Assertions.assertThat(result).contains(
@@ -92,6 +109,20 @@ public class ValidationTest {
             "person.age should be bigger than 18, but actual is 12",
             "person.address should contain China, but actual is US"
         );
+
+        personCheck1.validate(null).forEach(s -> System.out.println(s));
+    }
+
+    @Test
+    public void testV() {
+        final Validation<Try<String>, String> addressCheck1 = ValidationUtils.check(
+            Predicables.<Try<String>>nonNull().and(t -> t.filterTry(addr -> addr.contains("China")).isSuccess()),
+            address -> String.format("person.address should contain China, but actual is %s", address));
+        final Validation<Person, String> personCheck1 = person -> {
+            final Try<String> name = Try.of(person::getName);
+            return addressCheck1.validate(name);
+        };
+        personCheck1.validate(null).forEach(s -> System.out.println(s));
     }
 
     @Getter
