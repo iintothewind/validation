@@ -52,9 +52,10 @@ The client users will try and fix at least 3 times to submit a correct request t
 
 To resolve the above problems, the design purposes of this simple validation framework are:
 
-- return comprehensive failure messages when validation fails, not part of them
-- validations should be reusable
-- validations should be composable
+- Return comprehensive failure messages when validation fails, not part of them
+- Validations should be reusable
+- Validations should be composable
+- Zero external dependencies. All code is implemented by using jdk internal APIs.
 
 
 ## Design
@@ -73,7 +74,6 @@ public interface Validation<T, E> {
 And it takes any instance of type `T`, validates `t` instance and returns all failures with type `E`
 - At very first, you can use `valid()` to start with a validation. `Valid()` means a validation that always success.
 - After you created the first validation for type `T`, you can compose the other validation with function `and()` or `or()`
-- Zero external dependencies. All code is implemented by using jdk internal APIs.
 
 
 
