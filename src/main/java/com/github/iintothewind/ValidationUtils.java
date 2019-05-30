@@ -14,7 +14,7 @@ public interface ValidationUtils {
     Objects.requireNonNull(predicate, "predicate is required");
     Objects.requireNonNull(error, "error message is required");
     return (T input) -> {
-      if (predicate.test(input)) {
+      if (Predicables.<T>nonNull().and(predicate).test(input)) {
         return Collections.emptyList();
       } else {
         return Collections.singletonList(error);
@@ -26,7 +26,7 @@ public interface ValidationUtils {
     Objects.requireNonNull(predicate, "predicate is required");
     Objects.requireNonNull(function, "error message is required");
     return (T input) -> {
-      if (predicate.test(input)) {
+      if (Predicables.<T>nonNull().and(predicate).test(input)) {
         return Collections.emptyList();
       } else {
         return Collections.singletonList(function.apply(input));
@@ -53,14 +53,6 @@ public interface ValidationUtils {
     return checkNonNull(actual -> "target should not be null");
   }
 
-  static <E> Validation<Integer, E> checkInteger(final Predicate<Integer> predicate, final Function<Integer, E> errorFunction) {
-    return check(Predicables.<Integer>nonNull().and(predicate), errorFunction);
-  }
-
-  static <E> Validation<String, E> checkString(final Predicate<String> predicate, final Function<String, E> errorFunction) {
-    return check(Predicables.<String>nonNull().and(predicate), errorFunction);
-  }
-
   static <T, E> Validation<T, E> checkEqual(final T expected, final Function<T, E> errorFunction) {
     return check(actual -> Objects.equals(expected, actual), errorFunction);
   }
@@ -70,7 +62,7 @@ public interface ValidationUtils {
   }
 
   static <E> Validation<String, E> checkStringNotEmpty(final Function<String, E> errorFunction) {
-    return checkString(input -> !input.isEmpty(), errorFunction);
+    return check(input -> !input.isEmpty(), errorFunction);
   }
 
   static Validation<String, String> checkStringNotEmpty() {

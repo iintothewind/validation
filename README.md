@@ -83,17 +83,17 @@ By using this framework, the above validation could be:
 First lets create three validations:
 
 ```java
-final Validation<String, String> nameCheck = ValidationUtils.checkString(
-    name -> name.equals("John"),
-    name -> String.format("person.name should be equal to John, but actual is %s", name));
+final Validation<String, String> nameCheck = ValidationUtils.check(
+name -> name.equals("John"),
+name -> String.format("person.name should be equal to John, but actual is %s", name));
 
-final Validation<Integer, String> ageCheck = ValidationUtils.checkInteger(
-    age -> age > 18,
-    age -> String.format("person.age should be bigger than 18, but actual is %s", age));
+final Validation<Integer, String> ageCheck = ValidationUtils.check(
+age -> age > 18,
+age -> String.format("person.age should be bigger than 18, but actual is %s", age));
 
-final Validation<String, String> addressCheck = ValidationUtils.checkString(
-    address -> address.contains("China"),
-    address -> String.format("person.address should contain China, but actual is %s", address));
+final Validation<String, String> addressCheck = ValidationUtils.check(
+address -> address.contains("China"),
+address -> String.format("person.address should contain China, but actual is %s", address));
 ```
 
 Then we compose these three validations to one for Person validation:

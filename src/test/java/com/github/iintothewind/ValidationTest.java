@@ -14,15 +14,15 @@ import java.util.Optional;
 public class ValidationTest {
   @Test
   public void testValidateVargs() {
-    final Validation<Integer, String> check = ValidationUtils.checkInteger(i -> i > 0, actual -> String.format("%s should be greater than zero", actual));
+    final Validation<Integer, String> check = ValidationUtils.check(i -> i > 0, actual -> String.format("%s should be greater than zero", actual));
     Assertions.assertThat(check.validate(null)).contains("null should be greater than zero");
     Assertions.assertThat(check.validate(-1)).contains("-1 should be greater than zero");
   }
 
   @Test
   public void testAnd() {
-    final Validation<Integer, String> check1 = ValidationUtils.checkInteger(i -> i > 0, actual -> String.format("%s should be greater than zero", actual));
-    final Validation<Integer, String> check2 = ValidationUtils.checkInteger(i -> i < 10, actual -> String.format("%s should be smaller than ten", actual));
+    final Validation<Integer, String> check1 = ValidationUtils.check(i -> i > 0, actual -> String.format("%s should be greater than zero", actual));
+    final Validation<Integer, String> check2 = ValidationUtils.check(i -> i < 10, actual -> String.format("%s should be smaller than ten", actual));
     final Validation<Integer, String> numberCheck = check1.and(check2);
     Assertions.assertThat(numberCheck.validate(null)).contains("null should be greater than zero", "null should be smaller than ten");
     Assertions.assertThat(numberCheck.validate(-1)).contains("-1 should be greater than zero");
@@ -31,8 +31,8 @@ public class ValidationTest {
 
   @Test
   public void testOr() {
-    final Validation<Integer, String> check1 = ValidationUtils.checkInteger(i -> i < 0, actual -> String.format("%s should be smaller than zero", actual));
-    final Validation<Integer, String> check2 = ValidationUtils.checkInteger(i -> i > 10, actual -> String.format("%s should be smaller than ten", actual));
+    final Validation<Integer, String> check1 = ValidationUtils.check(i -> i < 0, actual -> String.format("%s should be smaller than zero", actual));
+    final Validation<Integer, String> check2 = ValidationUtils.check(i -> i > 10, actual -> String.format("%s should be smaller than ten", actual));
     final Validation<Integer, String> numberCheck = check1.or(check2);
     Assertions.assertThat(numberCheck.validate(-1)).isEmpty();
     Assertions.assertThat(numberCheck.validate(11)).isEmpty();
@@ -53,7 +53,7 @@ public class ValidationTest {
 
   @Test
   public void testCheckAll() {
-    final Validation<Iterable<Integer>, String> checkAllInts = ValidationUtils.checkAll(ValidationUtils.checkInteger(
+    final Validation<Iterable<Integer>, String> checkAllInts = ValidationUtils.checkAll(ValidationUtils.check(
       i -> i > 0,
       i -> String.format("%s should be bigger than 0", i)));
     final Iterable<String> errors = checkAllInts.validate(Lists.newArrayList(-1, 0, 1, 2, 3, null));
@@ -71,15 +71,15 @@ public class ValidationTest {
 
   @Test
   public void testCheckPerson() {
-    final Validation<String, String> nameCheck = ValidationUtils.checkString(
+    final Validation<String, String> nameCheck = ValidationUtils.check(
       name -> name.equals("John"),
       name -> String.format("person.name should be equal to John, but actual is %s", name));
 
-    final Validation<Integer, String> ageCheck = ValidationUtils.checkInteger(
+    final Validation<Integer, String> ageCheck = ValidationUtils.check(
       age -> age > 18,
       age -> String.format("person.age should be bigger than 18, but actual is %s", age));
 
-    final Validation<String, String> addressCheck = ValidationUtils.checkString(
+    final Validation<String, String> addressCheck = ValidationUtils.check(
       address -> address.contains("China"),
       address -> String.format("person.address should contain China, but actual is %s", address));
 
@@ -99,21 +99,21 @@ public class ValidationTest {
   @Test
   public void testSafeCheckPerson() {
     final Validation<Try<String>, String> nameCheck = ValidationUtils.check(
-      Predicables.<Try<String>>nonNull().and(t -> t.filterTry("John"::equals).isSuccess()),
+      t -> t.filterTry("John"::equals).isSuccess(),
       t -> t
         .map(s -> String.format("person.name should be equal to John, but actual is %s", s))
         .recover(throwable -> String.format("person.name: %s", throwable))
         .getOrElse("person.name: validation error"));
 
     final Validation<Try<Integer>, String> ageCheck = ValidationUtils.check(
-      Predicables.<Try<Integer>>nonNull().and(t -> t.filterTry(i -> i > 18).isSuccess()),
+      t -> t.filterTry(i -> i > 18).isSuccess(),
       t -> t
         .map(s -> String.format("person.age should be bigger than 18, but actual is %s", s))
         .recover(throwable -> String.format("person.age: %s", throwable))
         .getOrElse("person.age: validation error"));
 
     final Validation<Try<String>, String> addressCheck = ValidationUtils.check(
-      Predicables.<Try<String>>nonNull().and(t -> t.filterTry(addr -> addr.contains("China")).isSuccess()),
+      t -> t.filterTry(addr -> addr.contains("China")).isSuccess(),
       t -> t
         .map(s -> String.format("person.address should contain China, but actual is %s", s))
         .recover(throwable -> String.format("person.address: %s", throwable))
