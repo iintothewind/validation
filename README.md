@@ -77,7 +77,7 @@ And it takes any instance of type `T`, validates `t` instance and returns all fa
 
 
 
-## Sample
+## Usage
 By using this framework, the above validation could be:
 
 First lets create three validations:
