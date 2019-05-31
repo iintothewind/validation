@@ -10,26 +10,14 @@ import java.util.stream.StreamSupport;
 
 
 public interface ValidationUtils {
-  static <T, E> Validation<T, E> check(final Predicate<T> predicate, final E error) {
+  static <T, E> Validation<T, E> check(final Predicate<T> predicate, final Function<T, E> errorFunction) {
     Objects.requireNonNull(predicate, "predicate is required");
-    Objects.requireNonNull(error, "error message is required");
+    Objects.requireNonNull(errorFunction, "errorFunction is required");
     return (T input) -> {
       if (Predicables.<T>nonNull().and(predicate).test(input)) {
         return Collections.emptyList();
       } else {
-        return Collections.singletonList(error);
-      }
-    };
-  }
-
-  static <T, E> Validation<T, E> check(final Predicate<T> predicate, final Function<T, E> function) {
-    Objects.requireNonNull(predicate, "predicate is required");
-    Objects.requireNonNull(function, "error message is required");
-    return (T input) -> {
-      if (Predicables.<T>nonNull().and(predicate).test(input)) {
-        return Collections.emptyList();
-      } else {
-        return Collections.singletonList(function.apply(input));
+        return Collections.singletonList(errorFunction.apply(input));
       }
     };
   }

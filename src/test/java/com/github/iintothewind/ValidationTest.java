@@ -1,14 +1,16 @@
 package com.github.iintothewind;
 
-
 import com.google.common.collect.Lists;
+import io.vavr.CheckedPredicate;
 import io.vavr.control.Try;
 import lombok.Builder;
 import lombok.Getter;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
+import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Function;
 
 
 public class ValidationTest {
@@ -96,35 +98,42 @@ public class ValidationTest {
     );
   }
 
+  public static <T> Validation<Try<T>, String> safeCheck(
+    final CheckedPredicate<T> checkedPredicate,
+    final Function<T, String> errorFunction,
+    final Function<Throwable, String> throwableFunction) {
+    Objects.requireNonNull(checkedPredicate, "checkedPredicate is required");
+    Objects.requireNonNull(errorFunction, "errorFunction is required");
+    Objects.requireNonNull(throwableFunction, "throwableFunction is required");
+    return ValidationUtils.check(
+      t -> t.filterTry(checkedPredicate).isSuccess(),
+      t -> t.map(errorFunction).recover(throwableFunction).getOrElse(String.format("validation execution error: %s", t)));
+  }
+
   @Test
   public void testSafeCheckPerson() {
-    final Validation<Try<String>, String> nameCheck = ValidationUtils.check(
-      t -> t.filterTry("John"::equals).isSuccess(),
-      t -> t
-        .map(s -> String.format("person.name should be equal to John, but actual is %s", s))
-        .recover(throwable -> String.format("person.name: %s", throwable))
-        .getOrElse("person.name: validation error"));
+    final Validation<Try<String>, String> nameCheck = safeCheck(
+      "John"::equals,
+      s -> String.format("person.name should be equal to John, but actual is %s", s),
+      throwable -> String.format("person.name: %s", throwable));
 
-    final Validation<Try<Integer>, String> ageCheck = ValidationUtils.check(
-      t -> t.filterTry(i -> i > 18).isSuccess(),
-      t -> t
-        .map(s -> String.format("person.age should be bigger than 18, but actual is %s", s))
-        .recover(throwable -> String.format("person.age: %s", throwable))
-        .getOrElse("person.age: validation error"));
+    final Validation<Try<Integer>, String> ageCheck = safeCheck(
+      i -> i > 18,
+      s -> String.format("person.age should be bigger than 18, but actual is %s", s),
+      throwable -> String.format("person.age: %s", throwable));
 
-    final Validation<Try<String>, String> addressCheck = ValidationUtils.check(
-      t -> t.filterTry(addr -> addr.contains("China")).isSuccess(),
-      t -> t
-        .map(s -> String.format("person.address should contain China, but actual is %s", s))
-        .recover(throwable -> String.format("person.address: %s", throwable))
-        .getOrElse("person.address: validation error"));
+    final Validation<Try<String>, String> addressCheck = safeCheck(
+      addr -> addr.contains("China"),
+      s -> String.format("person.address should contain China, but actual is %s", s),
+      throwable -> String.format("person.address: %s", throwable));
 
     final Validation<Person, String> personCheck = Validation.<Person, String>valid()
       .and(person -> nameCheck.validate(Try.of(() -> person.getName())))
       .and(person -> ageCheck.validate(Try.of(() -> person.getAge())))
       .and(person -> addressCheck.validate(Try.of(() -> person.getAddress())));
 
-    personCheck.validate(null).forEach(s -> System.out.println(s));
+    personCheck.validate(null).forEach(System.out::println);
+    personCheck.validate(Person.builder().name("Jak").age(9).address("Japan").build()).forEach(System.out::println);
   }
 
   @Getter
