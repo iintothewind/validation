@@ -44,9 +44,9 @@ public void theLameValidation(final Person person) {
 
 It is obvious that the above validation is clumsy and not reusable:
 - The validation breaks and exception throws when any check is failed. 
-Consider this validation is used in a request check, and client just submitted with a request with a `Person` instance, with `name = Jack, Age = 12, Address = "US"`. 
-The client users will try and fix at least 3 times to submit a correct request then they can finally pass the validation.
-- Validation error is captured in exceptions. Validation user has to use try-catch to get the validation result, which makes code very ugly.
+Consider this validation is used in a request, and client just submitted a request with a `Person` instance, with `name = Jack, Age = 12, Address = "US"`. 
+The client users will have to try and fix at least 3 times to submit a correct request then they can finally pass the validation.
+- Validation error is captured in exceptions. Developers who use this validation method has to use try-catch to get the validation result, which makes code very ugly.
 - The validation logic could vary in different scenarios. This method will not be useful for a different scenario
 
 
