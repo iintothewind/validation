@@ -1,6 +1,6 @@
 package com.github.iintothewind.fp;
 
 @FunctionalInterface
-public interface CheckedRunnable {
+public interface ChkRunnable {
   void run() throws Throwable;
 }

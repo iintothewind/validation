@@ -2,6 +2,7 @@ package com.github.iintothewind;
 
 import java.util.Collections;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -14,7 +15,7 @@ public interface ValidationUtils {
     Objects.requireNonNull(predicate, "predicate is required");
     Objects.requireNonNull(errorFunction, "errorFunction is required");
     return (T input) -> {
-      if (Predicables.<T>nonNull().and(predicate).test(input)) {
+      if (predicate.test(input)) {
         return Collections.emptyList();
       } else {
         return Collections.singletonList(errorFunction.apply(input));
@@ -50,7 +51,7 @@ public interface ValidationUtils {
   }
 
   static <E> Validation<String, E> checkStringNotEmpty(final Function<String, E> errorFunction) {
-    return check(input -> !input.isEmpty(), errorFunction);
+    return check(input -> Optional.ofNullable(input).filter(s -> !s.isEmpty()).isPresent(), errorFunction);
   }
 
   static Validation<String, String> checkStringNotEmpty() {

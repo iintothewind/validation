@@ -4,10 +4,10 @@ import java.util.Objects;
 
 
 @FunctionalInterface
-public interface CheckedConsumer<T> {
+public interface ChkConsumer<T> {
   void accept(T value) throws Throwable;
 
-  default CheckedConsumer<T> andThen(CheckedConsumer<? super T> after) {
+  default ChkConsumer<T> andThen(ChkConsumer<? super T> after) {
     Objects.requireNonNull(after);
     return (T t) -> {
       accept(t);

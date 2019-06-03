@@ -4,24 +4,28 @@ import java.util.Objects;
 
 
 @FunctionalInterface
-public interface CheckedPredicate<T> {
-  static <T> CheckedPredicate<T> isEqual(Object that) {
+public interface ChkPredicate<T> {
+  static <T> ChkPredicate<T> isEqual(Object that) {
     return (null == that) ? Objects::isNull : that::equals;
   }
 
   boolean test(T t) throws Throwable;
 
-  default CheckedPredicate<T> negate() {
+  default ChkPredicate<T> negate() {
     return t -> !test(t);
   }
 
-  default CheckedPredicate<T> and(CheckedPredicate<? super T> other) {
+  default ChkPredicate<T> and(ChkPredicate<? super T> other) {
     Objects.requireNonNull(other);
     return (t) -> test(t) && other.test(t);
   }
 
-  default CheckedPredicate<T> or(CheckedPredicate<? super T> other) {
+  default ChkPredicate<T> or(ChkPredicate<? super T> other) {
     Objects.requireNonNull(other);
     return (t) -> test(t) || other.test(t);
+  }
+
+  static <T> ChkPredicate<T> nonNull() {
+    return Objects::isNull;
   }
 }

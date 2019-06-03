@@ -4,19 +4,19 @@ import java.util.Objects;
 
 
 @FunctionalInterface
-public interface CheckedFunction<T, R> {
-  static <T> CheckedFunction<T, T> identity() {
+public interface ChkFunction<T, R> {
+  static <T> ChkFunction<T, T> identity() {
     return t -> t;
   }
 
   R apply(T t) throws Throwable;
 
-  default <V> CheckedFunction<V, R> compose(CheckedFunction<? super V, ? extends T> before) {
+  default <V> ChkFunction<V, R> compose(ChkFunction<? super V, ? extends T> before) {
     Objects.requireNonNull(before);
     return (V v) -> apply(before.apply(v));
   }
 
-  default <V> CheckedFunction<T, V> andThen(CheckedFunction<? super R, ? extends V> after) {
+  default <V> ChkFunction<T, V> andThen(ChkFunction<? super R, ? extends V> after) {
     Objects.requireNonNull(after);
     return (T t) -> after.apply(apply(t));
   }

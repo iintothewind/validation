@@ -8,4 +8,5 @@ public interface Predicables {
   static <T> Predicate<T> nonNull() {
     return Objects::nonNull;
   }
+
 }
