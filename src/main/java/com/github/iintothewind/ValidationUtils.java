@@ -23,6 +23,18 @@ public interface ValidationUtils {
     };
   }
 
+  static <T, E> Validation<T, E> nonNullCheck(final Predicate<T> predicate, final Function<T, E> errorFunction) {
+    Objects.requireNonNull(predicate, "predicate is required");
+    Objects.requireNonNull(errorFunction, "errorFunction is required");
+    return (T input) -> {
+      if (MorePredicates.<T>nonNull().and(predicate).test(input)) {
+        return Collections.emptyList();
+      } else {
+        return Collections.singletonList(errorFunction.apply(input));
+      }
+    };
+  }
+
   static <T> Validation<Iterable<T>, String> checkAll(final Validation<T, String> v) {
     return (Iterable<T> iterable) -> StreamSupport.stream(iterable.spliterator(), true)
       .flatMap(t -> {

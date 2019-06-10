@@ -17,7 +17,7 @@ public class ValidationTest {
   @Test
   public void testValidateVargs() {
     final Validation<Integer, String> check = ValidationUtils.check(
-      Predicables.<Integer>nonNull().and(i -> i > 0),
+      MorePredicates.<Integer>nonNull().and(i -> i > 0),
       actual -> String.format("%s should be greater than zero", actual));
     Assertions.assertThat(check.validate(null)).contains("null should be greater than zero");
     Assertions.assertThat(check.validate(-1)).contains("-1 should be greater than zero");
@@ -26,10 +26,10 @@ public class ValidationTest {
   @Test
   public void testAnd() {
     final Validation<Integer, String> check1 = ValidationUtils.check(
-      Predicables.<Integer>nonNull().and(i -> i > 0),
+      MorePredicates.<Integer>nonNull().and(i -> i > 0),
       actual -> String.format("%s should be greater than zero", actual));
     final Validation<Integer, String> check2 = ValidationUtils.check(
-      Predicables.<Integer>nonNull().and(i -> i < 10),
+      MorePredicates.<Integer>nonNull().and(i -> i < 10),
       actual -> String.format("%s should be smaller than ten", actual));
     final Validation<Integer, String> numberCheck = check1.and(check2);
     Assertions.assertThat(numberCheck.validate(null)).contains("null should be greater than zero", "null should be smaller than ten");
@@ -40,10 +40,10 @@ public class ValidationTest {
   @Test
   public void testOr() {
     final Validation<Integer, String> check1 = ValidationUtils.check(
-      Predicables.<Integer>nonNull().and(i -> i < 0),
+      MorePredicates.<Integer>nonNull().and(i -> i < 0),
       actual -> String.format("%s should be smaller than zero", actual));
     final Validation<Integer, String> check2 = ValidationUtils.check(
-      Predicables.<Integer>nonNull().and(i -> i > 10),
+      MorePredicates.<Integer>nonNull().and(i -> i > 10),
       actual -> String.format("%s should be smaller than ten", actual));
     final Validation<Integer, String> numberCheck = check1.or(check2);
     Assertions.assertThat(numberCheck.validate(-1)).isEmpty();
@@ -66,7 +66,7 @@ public class ValidationTest {
   @Test
   public void testCheckAll() {
     final Validation<Iterable<Integer>, String> checkAllInts = ValidationUtils.checkAll(ValidationUtils.check(
-      Predicables.<Integer>nonNull().and(i -> i > 0),
+      MorePredicates.<Integer>nonNull().and(i -> i > 0),
       i -> String.format("%s should be bigger than 0", i)));
     final Iterable<String> errors = checkAllInts.validate(Lists.newArrayList(-1, 0, 1, 2, 3, null));
     Assertions.assertThat(errors).contains("-1 should be bigger than 0", "0 should be bigger than 0", "null should be bigger than 0");
@@ -75,7 +75,7 @@ public class ValidationTest {
   @Test
   public void testSafeCheck() {
     Validation<Try<String>, String> checkNs = ValidationUtils.check(
-      Predicables.<Try<String>>nonNull().and(t -> t.mapTry(Integer::parseInt).isSuccess()),
+      MorePredicates.<Try<String>>nonNull().and(t -> t.mapTry(Integer::parseInt).isSuccess()),
       input -> String.format("input %s should be a number string", input));
     Assertions.assertThat(checkNs.validate(null)).contains("input null should be a number string");
     Assertions.assertThat(checkNs.validate(Try.success("sss"))).contains("input Success(sss) should be a number string");
@@ -88,11 +88,11 @@ public class ValidationTest {
       name -> String.format("person.name should be equal to John, but actual is %s", name));
 
     final Validation<Integer, String> ageCheck = ValidationUtils.check(
-      Predicables.<Integer>nonNull().and(age -> age > 18),
+      MorePredicates.<Integer>nonNull().and(age -> age > 18),
       age -> String.format("person.age should be bigger than 18, but actual is %s", age));
 
     final Validation<String, String> addressCheck = ValidationUtils.check(
-      Predicables.<String>nonNull().and(addr -> addr.contains("China")),
+      MorePredicates.<String>nonNull().and(addr -> addr.contains("China")),
       address -> String.format("person.address should contain China, but actual is %s", address));
 
     final Validation<Person, String> personCheck = Validation.<Person, String>valid()
