@@ -24,7 +24,7 @@ And the validation checks:
 If any of the above checks failed, that validation should fail.
 
 Too many times, I saw developers who prefer Java 7 or older version language features 
-wrote this kind of **shit** on production environment: 
+wrote this kind of **method** on production environment: 
 ```java
 public void theLameValidation(final Person person) {
   if(person == null) {
@@ -57,6 +57,14 @@ To resolve the above problems, the design purposes of this simple validation fra
 - Validations should be composable
 - Zero external dependencies. All code is implemented by using jdk internal APIs.
 
+## Differences from Java Bean Validation (JSR303, JSR380)
+
+- `JSR303`,`JSR380` focus on **java bean** , it does not work on any value object.
+- The validations on each bean member variables cannot breakdown and be composed from each other. 
+`JSR303`,`JSR380` validates all bean member variables. It requires all validation for each member variable pass, then validation can pass.
+But for business workflows, the validation logic varies in each difference workflow. The validation logic cannot always be the same for a validation target object.
+That's why we need breakdown a target object validation to many different member variable validations, and compose them together so that we can reuse them in different workflows.
+- Customization efforts. The existing annotation for JSR303,JSR380 will not support all validations. It needs more efforts when we create our own customized annotation.
 
 ## Design
 
