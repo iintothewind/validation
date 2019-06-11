@@ -127,6 +127,9 @@ person.age should be bigger than 18, but actual is 12
 person.address should contain China, but actual is US
 ```
 
+The whole validation is composed as following structure:
+![person validation structure](src/main/resources/person.svg)
+
 By using this framework, the `nameCheck`, `ageCheck`, `addressCheck` can all be reusable.
 
 But reusability is not only limited to the created validations, you can add all common validations into ValidationUtils and combine them as needed.
