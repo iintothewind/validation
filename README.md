@@ -24,7 +24,7 @@ And the validation checks:
 If any of the above checks failed, that validation should fail.
 
 Too many times, I saw developers who prefer Java 7 or older version language features 
-wrote this kind of **shit** on production environment: 
+wrote this kind of **method** on production environment: 
 ```java
 public void theLameValidation(final Person person) {
   if(person == null) {
