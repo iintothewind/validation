@@ -23,7 +23,7 @@ And the validation checks:
 
 If any of the above checks failed, that validation should fail.
 
-Too many times, I saw developers who can only understand Java 7 or older version language features 
+Too many times, I saw developers who prefer Java 7 or older version language features 
 wrote this kind of **shit** on production environment: 
 ```java
 public void theLameValidation(final Person person) {
