@@ -10,7 +10,7 @@ number_bigger_than_check [color = "blue"]
 string_contains_check [color = "blue"]
 
 person -> {person_name, person_age, person_address} [stype = bold, label= "validation"];
-person_name -> {null_check, object_equals_check} [stype = bold, label = "predicates"];
-person_age -> {null_check, number_bigger_than_check} [stype= bold, label = "predicates"];
-person_address -> {null_check, string_contains_check} [stype = bold, label = "predicates"];
+person_name -> {null_check, object_equals_check} [stype = bold, label = "predicate"];
+person_age -> {null_check, number_bigger_than_check} [stype= bold, label = "predicate"];
+person_address -> {null_check, string_contains_check} [stype = bold, label = "predicate"];
 }
