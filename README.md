@@ -15,12 +15,10 @@ A simple functional Validation framework
 
 ```xml
 <repositories>
-  <dependency>
-    <groupId>com.github.iintothewind</groupId>
-    <artifactId>Validation</artifactId>
-    <version>0.4</version>
-    <type>pom</type>
-  </dependency>
+  <repository>
+    <id>validation-release</id>
+    <url>https://dl.bintray.com/iintothewind/maven</url>
+  </repository>
 </repositories>
 ```
 
