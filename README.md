@@ -30,7 +30,6 @@ A simple functional Validation framework
     <groupId>com.github.iintothewind</groupId>
     <artifactId>Validation</artifactId>
     <version>0.4</version>
-    <type>pom</type>
   </dependency>
 </dependencies>
 ```
