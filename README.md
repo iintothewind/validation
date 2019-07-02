@@ -5,6 +5,10 @@ A simple functional Validation framework
 
 ## Install
 
+### bintray repository
+
+[https://bintray.com/iintothewind/maven/validation](https://bintray.com/iintothewind/maven/validation)
+
 ### maven install
 
 - add repository
