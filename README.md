@@ -3,6 +3,57 @@
 # com.github.iintothewind.Validation
 A simple functional Validation framework
 
+## Install
+
+### bintray repository
+
+[https://bintray.com/iintothewind/maven/validation](https://bintray.com/iintothewind/maven/validation)
+
+### maven install
+
+- add repository
+
+```xml
+<repositories>
+  <repository>
+    <id>validation-release</id>
+    <url>https://dl.bintray.com/iintothewind/maven</url>
+  </repository>
+</repositories>
+```
+
+- add dependency
+
+```xml
+<dependencies>
+  <dependency>
+    <groupId>com.github.iintothewind</groupId>
+    <artifactId>Validation</artifactId>
+    <version>0.4</version>
+  </dependency>
+</dependencies>
+```
+
+### gradle install
+
+- add repository
+
+```groovy
+repositories {
+    maven {
+        url "https://dl.bintray.com/iintothewind/maven"
+    }
+}
+```
+
+- add dependency
+
+```groovy
+dependencies {
+    implementation "com.github.iintothewind:Validation:0.4"
+}
+```
+
 ## Purpose
 
 Consider there is an object instance `person` as following: 

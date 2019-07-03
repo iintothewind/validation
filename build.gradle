@@ -1,9 +1,11 @@
 plugins {
   id "java"
+  id "maven-publish"
+  id "com.jfrog.bintray" version "1.8.4"
 }
 
-group "com.github.iintothewind"
-version "0.2"
+group = validation_group
+version = validation_version
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 
@@ -39,4 +41,33 @@ jar {
 task srcJar(type: Jar) {
   classifier = 'sources'
   from sourceSets.main.allSource
+}
+
+task docJar(type: Jar, dependsOn: srcJar) {
+  classifier = 'javadoc'
+  from 'build/docs/javadoc'
+}
+
+publishing {
+  publications {
+    mavenJava(MavenPublication) {
+      from components.java
+    }
+  }
+}
+
+artifacts {
+  archives srcJar
+  archives docJar
+}
+
+bintray {
+  user = project.hasProperty('bintray_user') ? project.property('bintray_user') : System.getenv('BINTRAY_USER')
+  key = project.hasProperty('bintray_key') ? project.property('bintray_key') : System.getenv('BINTRAY_KEY')
+  configurations = ['archives']
+  publications = ['mavenJava']
+  pkg {
+    repo = 'maven'
+    name = 'validation'
+  }
 }
