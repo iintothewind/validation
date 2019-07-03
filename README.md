@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/iintothewind/validation.svg?branch=master)](https://travis-ci.org/iintothewind/validation)
 
-# com.github.iintothewind.Validation
-A simple functional Validation framework
+# com.github.iintothewind.validation
+A simple functional validation framework
 
 ## Install
 
@@ -28,8 +28,8 @@ A simple functional Validation framework
 <dependencies>
   <dependency>
     <groupId>com.github.iintothewind</groupId>
-    <artifactId>Validation</artifactId>
-    <version>0.5</version>
+    <artifactId>validation</artifactId>
+    <version>0.6</version>
   </dependency>
 </dependencies>
 ```
@@ -50,7 +50,7 @@ repositories {
 
 ```groovy
 dependencies {
-    implementation "com.github.iintothewind:Validation:0.5"
+    implementation "com.github.iintothewind:validation:0.6"
 }
 ```
 

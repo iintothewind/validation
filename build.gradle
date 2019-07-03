@@ -4,8 +4,8 @@ plugins {
   id "com.jfrog.bintray" version "1.8.4"
 }
 
-group = validation_group
-version = validation_version
+group = project_group
+version = project_version
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 
@@ -67,7 +67,7 @@ bintray {
   configurations = ['archives']
   publications = ['mavenJava']
   pkg {
-    repo = 'maven'
-    name = 'validation'
+    repo = bintray_repo
+    name = project_name
   }
 }
