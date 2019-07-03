@@ -29,7 +29,7 @@ A simple functional Validation framework
   <dependency>
     <groupId>com.github.iintothewind</groupId>
     <artifactId>Validation</artifactId>
-    <version>0.4</version>
+    <version>0.5</version>
   </dependency>
 </dependencies>
 ```
@@ -50,7 +50,7 @@ repositories {
 
 ```groovy
 dependencies {
-    implementation "com.github.iintothewind:Validation:0.4"
+    implementation "com.github.iintothewind:Validation:0.5"
 }
 ```
 

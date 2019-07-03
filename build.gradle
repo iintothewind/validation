@@ -39,12 +39,12 @@ jar {
 }
 
 task srcJar(type: Jar) {
-  classifier = 'sources'
+  archiveClassifier = 'sources'
   from sourceSets.main.allSource
 }
 
 task docJar(type: Jar, dependsOn: srcJar) {
-  classifier = 'javadoc'
+  archiveClassifier = 'javadoc'
   from 'build/docs/javadoc'
 }
 
