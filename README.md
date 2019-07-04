@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/iintothewind/validation.svg?branch=master)](https://travis-ci.org/iintothewind/validation)
-
+[ ![Download](https://api.bintray.com/packages/iintothewind/maven/validation/images/download.svg?version=0.7) ](https://bintray.com/iintothewind/maven/validation/0.7/link)
 # com.github.iintothewind.validation
 A simple functional validation framework
 
